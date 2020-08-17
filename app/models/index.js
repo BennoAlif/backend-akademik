@@ -32,11 +32,15 @@ db.fakultas.hasMany(db.jurusan, {
 db.jurusan.belongsTo(db.fakultas, {
     as: "fakultas",
     foreignKey: "kode_fakultas",
-})
+});
 
 db.jurusan.hasMany(db.mahasiswa, {
     as: "mahasiswa",
     foreignKey: "kode_jurusan",
+});
+db.mahasiswa.belongsTo(db.jurusan, {
+    as: "jurusan",
+    foreignKey: "kode_jurusan"
 });
 
 db.dosen.hasMany(db.mataKuliah, {

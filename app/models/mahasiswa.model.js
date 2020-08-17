@@ -2,7 +2,7 @@ module.exports = (sequelize, Sequelize) => {
     const Mahasiswa = sequelize.define("mahasiswa", {
         nim: {
             type: Sequelize.STRING(8),
-            primayKey: true,
+            primaryKey: true,
             allowNull: false
         },
         nama: {

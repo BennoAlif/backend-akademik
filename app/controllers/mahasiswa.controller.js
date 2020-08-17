@@ -1,22 +1,27 @@
 const db = require("../models");
-const Jurusan = db.jurusan;
+const Mahasiswa = db.mahasiswa;
 const Op = db.sequelize.Op;
 
 exports.create = (req, res) => {
-    if (!req.body.kode_jurusan) {
+    if(!req.body.nim){
         res.status(400).send({
-            message: "Content can not be empty"
+            message: "Cannot can not be empty"
         })
         return;
     };
 
-    const jurusan = {
-        kode_jurusan: req.body.kode_jurusan,
-        nama_jurusan: req.body.nama_jurusan,
-        kode_fakultas: req.body.kode_fakultas
+    const mahasiswa = {
+        nim: req.body.nim,
+        nama: req.body.nama,
+        alamat: req.body.alamat,
+        tempat_lahir: req.body.tempat_lahir,
+        tanggal_lahir: req.body.tanggal_lahir,
+        jenis_kelamin: req.body.jenis_kelamin,
+        agama: req.body.agama,
+        kode_jurusan: req.body.kode_jurusan
     };
 
-    Jurusan.create(jurusan).then((result) => {
+    Mahasiswa.create(mahasiswa).then((result) => {
         res.send(result)
     }).catch((err) => {
         res.status(500).send({
@@ -26,8 +31,8 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-    Jurusan.findAll({
-        include: ["fakultas"],
+    Mahasiswa.findAll({
+        include: ["jurusan"]
     }).then((result) => {
         res.send(result)
     }).catch((err) => {
@@ -38,63 +43,63 @@ exports.getAll = (req, res) => {
 }
 
 exports.findById = (req, res) => {
-    const kode_jurusan = req.params.kode_jurusan;
+    const nim = req.params.nim;
 
-    Jurusan.findByPk(kode_jurusan, {
-        include: ["fakultas"],
+    Mahasiswa.findByPk(nim, {
+        include: ["jurusan"]
     }).then((result) => {
         res.send(result)
     }).catch((err) => {
         res.status(500).send({
-            message: "Error retrieving Fakultas with kode fakultas=" + kode_fakultas
+            message: "Error retrieving Mahasiswa with NIM=" + nim
         })
     });
 }
 
 exports.update = (req, res) => {
-    const kode_jurusan = req.params.kode_jurusan;
+    const nim = req.params.nim;
 
-    Jurusan.update(req.body, {
+    Mahasiswa.update(req.body, {
         where: {
-            kode_jurusan
+            nim
         }
     }).then((result) => {
         if (result == 1) {
             res.send({
-                message: "Jurusan was updated successfully"
+                message: "Mahasiswa was updated successfully"
             })
         } else {
             res.send({
-                message: `Cannot update Jurusan with kode jurusan=${kode_jurusan}.`
+                message: `Cannot update Mahasiswa with NIM=${nim}.`
             })
         }
     }).catch((err) => {
         res.status(500).send({
-            message: "Error updating Jurusan with kode jurusan= " + kode_jurusan
+            message: "Error updating Mahasiswa with NIM= " + nim
         })
     });
 }
 
 exports.delete = (req, res) => {
-    const kode_jurusan = req.params.kode_jurusan;
+    const nim = req.params.nim;
 
-    Jurusan.destroy({
+    Mahasiswa.destroy({
         where: {
-            kode_jurusan
+            nim
         }
     }).then((result) => {
         if (result == 1) {
             res.send({
-                message: "Jurusan was deleted successfully"
+                message: "Mahasiswa was deleted successfully"
             })
         } else {
             res.send({
-                message: `Cannot delete Jurusan with kode jurusan=${kode_jurusan}.`
+                message: `Cannot delete Mahasiswa with NIM=${nim}.`
             })
         }
     }).catch((err) => {
         res.status(500).send({
-            message: "Could not delete Jurusan with kode jurusan= " + kode_jurusan
+            message: "Could not delete Mahasiswa with NIM= " + nim
         })
     });
 }

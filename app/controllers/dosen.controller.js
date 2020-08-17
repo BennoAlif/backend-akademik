@@ -1,21 +1,24 @@
 const db = require("../models");
-const Fakultas = db.fakultas;
+const Dosen = db.dosen;
 const Op = db.sequelize.Op;
 
 exports.create = (req, res) => {
-    if (!req.body.kode_fakultas) {
+    if (!req.body.nip) {
         req.status(400).send({
             message: "Content can not be empty"
         });
         return;
     };
 
-    const fakultas = {
-        kode_fakultas: req.body.kode_fakultas,
-        nama_fakultas: req.body.nama_fakultas
+    const dosen = {
+        nip: req.body.nip,
+        nama_dosen: req.body.nama_dosen,
+        alamat: req.body.alamat,
+        jenis_kelamin: req.body.jenis_kelamin,
+        agama: req.body.agama
     };
 
-    Fakultas.create(fakultas).then((result) => {
+    Dosen.create(dosen).then((result) => {
         res.send(result)
     }).catch((err) => {
         res.status(500).send({
@@ -25,9 +28,7 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-    Fakultas.findAll({
-        include: ["jurusan"],
-    }).then((result) => {
+    Dosen.findAll().then((result) => {
         res.send(result)
     }).catch((err) => {
         res.status(500).send({
@@ -37,63 +38,61 @@ exports.getAll = (req, res) => {
 }
 
 exports.findById = (req, res) => {
-    const kode_fakultas = req.params.kode_fakultas;
+    const nip = req.params.nip;
 
-    Fakultas.findByPk(kode_fakultas, {
-        include: ["jurusan"],
-    }).then((result) => {
+    Dosen.findByPk(nip).then((result) => {
         res.send(result)
     }).catch((err) => {
         res.status(500).send({
-            message: "Error retrieving Fakultas with kode fakultas=" + kode_fakultas
+            message: "Error retrieving Dosen with NIP=" + nip
         })
     });
 }
 
 exports.update = (req, res) => {
-    const kode_fakultas = req.params.kode_fakultas;
+    const nip = req.params.nip;
 
-    Fakultas.update(req.body, {
+    Dosen.update(req.body, {
         where: {
-            kode_fakultas
+            nip
         }
     }).then((result) => {
         if (result == 1) {
             res.send({
-                message: "Fakultas was updated successfully"
+                message: "Dosen was updated successfully"
             })
         } else {
             res.send({
-                message: `Cannot update Fakultas with kode fakultas=${kode_fakultas}.`
+                message: `Cannot update Dosen with NIP=${nip}.`
             })
         }
     }).catch((err) => {
         res.status(500).send({
-            message: "Error updating Fakultas with kode fakultas= " + kode_fakultas
+            message: "Error updating Dosen with NIP= " + nip
         })
     });
 }
 
 exports.delete = (req, res) => {
-    const kode_fakultas = req.params.kode_fakultas;
+    const nip = req.params.nip;
 
-    Fakultas.destroy({
+    Dosen.destroy({
         where: {
-            kode_fakultas
+            nip
         }
     }).then((result) => {
         if (result == 1) {
             res.send({
-                message: "Fakultas was deleted successfully"
+                message: "Dosen was deleted successfully"
             })
         } else {
             res.send({
-                message: `Cannot delete Fakultas with kode fakultas=${kode_fakultas}.`
+                message: `Cannot delete Dosen with NIP=${nip}.`
             })
         }
     }).catch((err) => {
         res.status(500).send({
-            message: "Could not delete Fakultas with kode fakultas= " + kode_fakultas
+            message: "Could not delete Dosen with NIP= " + nip
         })
     });
 }

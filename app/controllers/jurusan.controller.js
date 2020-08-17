@@ -1,21 +1,22 @@
 const db = require("../models");
-const Fakultas = db.fakultas;
+const Jurusan = db.jurusan;
 const Op = db.sequelize.Op;
 
 exports.create = (req, res) => {
-    if (!req.body.kode_fakultas) {
-        req.status(400).send({
+    if (!req.body.kode_jurusan) {
+        res.status(400).send({
             message: "Content can not be empty"
-        });
+        })
         return;
     };
 
-    const fakultas = {
-        kode_fakultas: req.body.kode_fakultas,
-        nama_fakultas: req.body.nama_fakultas
+    const jurusan = {
+        kode_jurusan: req.body.kode_jurusan,
+        nama_jurusan: req.body.nama_jurusan,
+        kode_fakultas: req.body.kode_fakultas
     };
 
-    Fakultas.create(fakultas).then((result) => {
+    Jurusan.create(jurusan).then((result) => {
         res.send(result)
     }).catch((err) => {
         res.status(500).send({
@@ -25,8 +26,8 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-    Fakultas.findAll({
-        include: ["jurusan"],
+    Jurusan.findAll({
+        include: ["fakultas"],
     }).then((result) => {
         res.send(result)
     }).catch((err) => {
@@ -37,10 +38,10 @@ exports.getAll = (req, res) => {
 }
 
 exports.findById = (req, res) => {
-    const kode_fakultas = req.params.kode_fakultas;
+    const kode_jurusan = req.params.kode_jurusan;
 
-    Fakultas.findByPk(kode_fakultas, {
-        include: ["jurusan"],
+    Jurusan.findByPk(kode_jurusan, {
+        include: ["fakultas"],
     }).then((result) => {
         res.send(result)
     }).catch((err) => {
@@ -51,49 +52,49 @@ exports.findById = (req, res) => {
 }
 
 exports.update = (req, res) => {
-    const kode_fakultas = req.params.kode_fakultas;
+    const kode_jurusan = req.params.kode_jurusan;
 
-    Fakultas.update(req.body, {
+    Jurusan.update(req.body, {
         where: {
-            kode_fakultas
+            kode_jurusan
         }
     }).then((result) => {
         if (result == 1) {
             res.send({
-                message: "Fakultas was updated successfully"
+                message: "Jurusan was updated successfully"
             })
         } else {
             res.send({
-                message: `Cannot update Fakultas with kode fakultas=${kode_fakultas}.`
+                message: `Cannot update Jurusan with kode jurusan=${kode_jurusan}.`
             })
         }
     }).catch((err) => {
         res.status(500).send({
-            message: "Error updating Fakultas with kode fakultas= " + kode_fakultas
+            message: "Error updating Jurusan with kode jurusan= " + kode_jurusan
         })
     });
 }
 
 exports.delete = (req, res) => {
-    const kode_fakultas = req.params.kode_fakultas;
+    const kode_jurusan = req.params.kode_jurusan;
 
-    Fakultas.destroy({
+    Jurusan.destroy({
         where: {
-            kode_fakultas
+            kode_jurusan
         }
     }).then((result) => {
         if (result == 1) {
             res.send({
-                message: "Fakultas was deleted successfully"
+                message: "Jurusan was deleted successfully"
             })
         } else {
             res.send({
-                message: `Cannot delete Fakultas with kode fakultas=${kode_fakultas}.`
+                message: `Cannot delete Jurusan with kode jurusan=${kode_jurusan}.`
             })
         }
     }).catch((err) => {
         res.status(500).send({
-            message: "Could not delete Fakultas with kode fakultas= " + kode_fakultas
+            message: "Could not delete Jurusan with kode jurusan= " + kode_jurusan
         })
     });
 }

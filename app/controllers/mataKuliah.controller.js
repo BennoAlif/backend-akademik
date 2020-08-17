@@ -1,25 +1,23 @@
 const db = require("../models");
-const Dosen = db.dosen;
+const MataKuliah = db.mataKuliah;
 const Op = db.sequelize.Op;
 
 exports.create = (req, res) => {
-    if (!req.body.nip) {
+    if (!req.body.kode_mk) {
         req.status(400).send({
             message: "Content can not be empty"
         });
         return;
     };
 
-    const dosen = {
-        nip: req.body.nip,
-        nama_dosen: req.body.nama_dosen,
-        alamat: req.body.alamat,
-        jenis_kelamin: req.body.jenis_kelamin,
-        agama: req.body.agama,
-        kode_mk: req.body.kode_mk
-    };
+    const mataKuliah = {
+        kode_mk: req.body.kode_mk,
+        nama_mk: req.body.nama_mk,
+        sks: req.body.sks,
+        semester: req.body.semester,
+    }
 
-    Dosen.create(dosen).then((result) => {
+    MataKuliah.create(mataKuliah).then((result) => {
         res.send(result)
     }).catch((err) => {
         res.status(500).send({
@@ -29,8 +27,8 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-    Dosen.findAll({
-        include: ["mata_kuliah"],
+    MataKuliah.findAll({
+        include: ["dosen"]
     }).then((result) => {
         res.send(result)
     }).catch((err) => {
@@ -41,63 +39,63 @@ exports.getAll = (req, res) => {
 }
 
 exports.findById = (req, res) => {
-    const nip = req.params.nip;
+    const kode_mk = req.params.kode_mk;
 
-    Dosen.findByPk(nip, {
-        include: ["mata_kuliah"],
+    MataKuliah.findByPk(kode_mk, {
+        include: ["dosen"]
     }).then((result) => {
         res.send(result)
     }).catch((err) => {
         res.status(500).send({
-            message: "Error retrieving Dosen with NIP=" + nip
+            message: "Error retrieving Mata Kuliah with kode mata kuliah=" + kode_mk
         })
     });
 }
 
 exports.update = (req, res) => {
-    const nip = req.params.nip;
+    const kode_mk = req.params.kode_mk;
 
-    Dosen.update(req.body, {
+    MataKuliah.update(req.body, {
         where: {
-            nip
+            kode_mk
         }
     }).then((result) => {
         if (result == 1) {
             res.send({
-                message: "Dosen was updated successfully"
+                message: "Mata Kuliah was updated successfully"
             })
         } else {
             res.send({
-                message: `Cannot update Dosen with NIP=${nip}.`
+                message: `Cannot update Mata Kuliah with kode mata kuliah=${kode_mk}.`
             })
         }
     }).catch((err) => {
         res.status(500).send({
-            message: "Error updating Dosen with NIP= " + nip
+            message: "Error updating Mata Kuliah with kode mata kuliah= " + kode_mk
         })
     });
 }
 
 exports.delete = (req, res) => {
-    const nip = req.params.nip;
+    const kode_mk = req.params.kode_mk;
 
-    Dosen.destroy({
+    MataKuliah.destroy({
         where: {
-            nip
+            kode_mk
         }
     }).then((result) => {
         if (result == 1) {
             res.send({
-                message: "Dosen was deleted successfully"
+                message: "Mata Kuliah was deleted successfully"
             })
         } else {
             res.send({
-                message: `Cannot delete Dosen with NIP=${nip}.`
+                message: `Cannot delete Mata Kuliah with kode mata kuliah=${kode_mk}.`
             })
         }
     }).catch((err) => {
         res.status(500).send({
-            message: "Could not delete Dosen with NIP= " + nip
+            message: "Could not delete Mata Kuliah with kode mata kuliah= " + kode_mk
         })
     });
 }

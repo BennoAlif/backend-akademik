@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
     const Krs = sequelize.define("krs", {
-        nilai: {
+        indeks: {
             type: Sequelize.CHAR(1)
         }
     }, {

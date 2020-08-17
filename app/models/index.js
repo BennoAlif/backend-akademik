@@ -43,9 +43,13 @@ db.mahasiswa.belongsTo(db.jurusan, {
     foreignKey: "kode_jurusan"
 });
 
-db.dosen.hasMany(db.mataKuliah, {
+db.dosen.belongsTo(db.mataKuliah, {
     as: "mata_kuliah",
-    foreignKey: "nip"
+    foreignKey: "kode_mk"
+});
+db.mataKuliah.hasMany(db.dosen, {
+    as: "dosen",
+    foreignKey: "kode_mk"
 });
 
 db.mahasiswa.hasOne(db.krs, {
@@ -53,10 +57,14 @@ db.mahasiswa.hasOne(db.krs, {
     foreignKey: "nim"
 });
 
+db.dosen.hasOne(db.krs, {
+    as: "krs",
+    foreignKey: "nip"
+});
+
 db.mataKuliah.hasOne(db.krs, {
     as: "krs",
     foreignKey: "kode_mk"
-});
-
+})
 
 module.exports = db;

@@ -52,18 +52,18 @@ db.mataKuliah.hasMany(db.dosen, {
     foreignKey: "kode_mk"
 });
 
-db.mahasiswa.hasOne(db.krs, {
-    as: "krs",
+db.krs.belongsTo(db.mahasiswa, {
+    as: "mahasiswa",
     foreignKey: "nim"
 });
 
-db.dosen.hasOne(db.krs, {
-    as: "krs",
+db.krs.belongsTo(db.dosen, {
+    as: "dosen",
     foreignKey: "nip"
 });
 
-db.mataKuliah.hasOne(db.krs, {
-    as: "krs",
+db.krs.belongsTo(db.mataKuliah, {
+    as: "matakuliah",
     foreignKey: "kode_mk"
 })
 

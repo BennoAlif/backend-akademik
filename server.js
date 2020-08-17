@@ -36,6 +36,7 @@ require("./app/routes/jurusan.routes")(app);
 require("./app/routes/mahasiswa.routes")(app);
 require("./app/routes/dosen.routes")(app);
 require("./app/routes/mataKuliah.routes")(app);
+require("./app/routes/krs.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
